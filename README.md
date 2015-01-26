@@ -22,6 +22,7 @@ API key:
 ./dork-cli.py [additional search terms / dorks]
 
 example:
+<pre>
 $ ./dork-cli.py inurl:login
 https://www.example.com/usher/Login.aspx
 https://www.example.com/login/index.php
@@ -30,6 +31,7 @@ https://www.example.com/VirtualEMS/Login.aspx
 http://www.example.com/index.php?cmd=login
 https://www.example.com/TED/Login.aspx
 [...]
+</pre>
 
 ## API Limitations ##
 The free Google API limits you to 100 searches per day, with a maximum of 10 results per search. This means if you configure dork-cli.py to return 100 results, it will issue 10 queries (1/10th of your daily limit) each time it is run. You have the option to pay for additional searches via the Google API console.
