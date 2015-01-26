@@ -32,6 +32,7 @@ http://www.example.com/SitePages/VOIP%20ID.aspx
 http://www.example.com/personnel_ext.php?id=44
 http://www.example.com/its/alerts/event.php?id=7220
 http://www.example.com/directory/details.cgi?id=21
+[...]
 </pre>
 <pre>
 $ ./dork-cli.py inurl:login
