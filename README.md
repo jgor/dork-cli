@@ -1,7 +1,7 @@
 dork-cli
 ========
 
-Command-line utility for finding dynamic webpages within a Google Custom Search Engine (CSE) using Google dorks.
+Command-line utility for finding potentially vulnerable dynamic webpages within a Google Custom Search Engine (CSE) using Google dorks.
 
 ## Setup ##
 In order to use this program you need to configure at a minimum two settings in dork-cli.py: a Google API key and a custom search engine id. Additionally you can configure the number of search results returned per run as well as the list of dynamic file extensions searched.
