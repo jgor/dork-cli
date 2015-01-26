@@ -21,15 +21,31 @@ API key:
 ## Usage ##
 ./dork-cli.py [additional search terms / dorks]
 
-example:
+examples:
+<pre>
+$ ./dork-cli.py inurl:id
+http://www.example.com/its/sla/sla.php?id=1617
+http://www.example.com/its/sla/sla.php?id=1593
+http://www.example.com/bbucks/index.php?site=5&scode=0&id=720
+http://www.example.com/directory/details.aspx?id=33
+http://www.example.com/SitePages/VOIP%20ID.aspx
+http://www.example.com/personnel_ext.php?id=44
+http://www.example.com/its/alerts/event.php?id=7220
+http://www.example.com/directory/details.cgi?id=21
+</pre>
 <pre>
 $ ./dork-cli.py inurl:login
 https://www.example.com/usher/Login.aspx
 https://www.example.com/login/index.php
 http://www.example.com/rooms/index.php?option=com_user&view=login&Itemid=8
-https://www.example.com/VirtualEMS/Login.aspx
 http://www.example.com/index.php?cmd=login
-https://www.example.com/TED/Login.aspx
+[...]
+</pre>
+<pre>
+$ ./dork-cli.py intitle:login inurl:admin
+https://www.example.com/users/lab/admin/portal.php
+https://www.example.com/admin/start/login.aspx?ReturnUrl=%2Fadmin%2Fscheduling%2Faudit%2Fdefault.aspx
+http://www.example.com/admin/admin.php
 [...]
 </pre>
 
