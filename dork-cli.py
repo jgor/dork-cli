@@ -23,7 +23,8 @@ while data['start'] <= num_results:
     try:
         response = json.load(urllib2.urlopen(url))
     except urllib2.HTTPError:
-        print 'HTTP error'
+        response = json.load(e)
+        print >> sys.stderr, "error: " + str(response['error']['code']) + " - " + response['error']['message']
         sys.exit(1)
     for item in response['items']:
         print item['link']
