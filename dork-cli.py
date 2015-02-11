@@ -22,9 +22,11 @@ while data['start'] <= num_results:
     url = 'https://www.googleapis.com/customsearch/v1?'+ urllib.urlencode(data)
     try:
         response = json.load(urllib2.urlopen(url))
-    except urllib2.HTTPError:
+    except urllib2.HTTPError, e:
         response = json.load(e)
         print >> sys.stderr, "error: " + str(response['error']['code']) + " - " + response['error']['message']
+        for error in response['error']['errors']:
+            print >> sys.stderr, error['domain'] + "::" + error['reason'] + "::" + error['message']
         sys.exit(1)
     for item in response['items']:
         print item['link']
