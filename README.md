@@ -9,7 +9,7 @@ In order to use this program you need to configure at a minimum two settings in 
 Custom Search Engine:
 * Create a custom search engine via https://www.google.com/cse/
 * Add your desired domain(s) under "Sites to search"
-* Set the engine id (the cx value in your CSE's url) in dork-cli.py
+* Set the engine id (the cx value in your CSE's url, e.g. "017576662512468239146:omuauf_lfve") in dork-cli.py
 
 API key:
 * Open the Google API console at https://code.google.com/apis/console
