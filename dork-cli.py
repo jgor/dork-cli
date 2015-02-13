@@ -8,6 +8,7 @@ api_key = 'YOUR_GOOGLE_API_KEY_HERE'
 engine_id = 'YOUR_CUSTOM_SEARCH_ENGINE_ID_HERE'
 num_results = 30
 dynamic_extensions = ['asp', 'aspx', 'cfm', 'cgi', 'jsp', 'php', 'phtm', 'phtml', 'shtm', 'shtml']
+sleep_secs_on_daily_limit_hit = 3600
 
 data = {}
 data['key'] = api_key
@@ -27,7 +28,13 @@ while data['start'] <= num_results:
         print >> sys.stderr, "error: " + str(response['error']['code']) + " - " + response['error']['message']
         for error in response['error']['errors']:
             print >> sys.stderr, error['domain'] + "::" + error['reason'] + "::" + error['message']
-        sys.exit(1)
+        if "Exceeded" in response['error']['message']:
+            if int(request['totalResults']) == 0:
+                print >> sys.stderr, "sleeping " + sleep_secs_on_daily_limit_hit + " seconds"
+                time.sleep(sleep_secs_on_daily_limit_hit)
+                continue
+        else:
+            sys.exit(1)
     for item in response['items']:
         print item['link']
     data['start'] += data['num']
