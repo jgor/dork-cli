@@ -35,6 +35,9 @@ while data['start'] <= num_results:
                 continue
         else:
             sys.exit(1)
+    for request in response['queries']['request']:
+        if int(request['totalResults']) == 0:
+            sys.exit(0)
     for item in response['items']:
         print item['link']
     data['start'] += data['num']
