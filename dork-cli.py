@@ -3,6 +3,7 @@ import urllib2
 import urllib
 import json
 import sys
+import time
 
 api_key = 'YOUR_GOOGLE_API_KEY_HERE'
 engine_id = 'YOUR_CUSTOM_SEARCH_ENGINE_ID_HERE'
@@ -29,10 +30,9 @@ while data['start'] <= num_results:
         for error in response['error']['errors']:
             print >> sys.stderr, error['domain'] + "::" + error['reason'] + "::" + error['message']
         if "Exceeded" in response['error']['message']:
-            if int(request['totalResults']) == 0:
-                print >> sys.stderr, "sleeping " + sleep_secs_on_daily_limit_hit + " seconds"
-                time.sleep(sleep_secs_on_daily_limit_hit)
-                continue
+            print >> sys.stderr, "sleeping " + str(sleep_secs_on_daily_limit_hit) + " seconds"
+            time.sleep(sleep_secs_on_daily_limit_hit)
+            continue
         else:
             sys.exit(1)
     for request in response['queries']['request']:
