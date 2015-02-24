@@ -5,8 +5,8 @@ try:
     from urllib.parse import urlencode
     from urllib.error import HTTPError
 except ImportError:
-    from urllib import urlopen, urlencode
-    from urllib2 import HTTPError
+    from urllib import urlencode
+    from urllib2 import urlopen, HTTPError
 import json
 import sys
 import time
@@ -54,7 +54,8 @@ def main():
             response_str = response_str.read().decode('utf-8')
             response = json.loads(response_str)
         except HTTPError as e:
-            response = json.load(e)
+            response_str = e.read().decode('utf-8')
+            response = json.loads(response_str)
             print("error: " + str(response['error']['code']) + " - " + response['error']['message'], file=sys.stderr)
             for error in response['error']['errors']:
                 print(error['domain'] + "::" + error['reason'] + "::" + error['message'], file=sys.stderr)
