@@ -62,7 +62,9 @@ def main():
         except HTTPError as e:
             response_str = e.read().decode('utf-8')
             response = json.loads(response_str)
-            if response['error']['code'] == 500:
+            if "Invalid Value" in response['error']['message']:
+                sys.exit(0)
+            elif response['error']['code'] == 500:
                 data['q'] = data_saved
                 query_max_reached = True
                 continue
