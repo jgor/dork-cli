@@ -16,7 +16,6 @@ import argparse
 engine = ''
 key = ''
 max_queries = 10
-results = 10
 sleep = 0
 dynamic_extensions = ['asp', 'aspx', 'cfm', 'cgi', 'jsp', 'php', 'phtm', 'phtml', 'shtm', 'shtml']
 
@@ -28,8 +27,6 @@ def main():
                    help='Google API key')
     parser.add_argument('-m', '--max-queries', type=int, default=max_queries,
                    help='Maximum number of queries to issue')
-    parser.add_argument('-r', '--results', type=int, default=results,
-                   help='Approximate number of search results to return')
     parser.add_argument('-s', '--sleep', type=int, default=sleep,
                    help='Seconds to sleep before retry if daily API limit is reached (0=disable)')
     parser.add_argument('terms', metavar='T', nargs='*',
@@ -55,7 +52,7 @@ def main():
     query_count = 0
     data_saved = data['q']
 
-    while found <= args.results and query_count < args.max_queries:
+    while query_count < args.max_queries:
         url = 'https://www.googleapis.com/customsearch/v1?'+ urlencode(data)
         try:
             response_str = urlopen(url)
