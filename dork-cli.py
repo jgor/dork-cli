@@ -2,18 +2,20 @@
 from __future__ import print_function
 try:
     from urllib.request import urlopen
-    from urllib.parse import urlencode
+    from urllib.parse import urlencode,urlparse
     from urllib.error import HTTPError
 except ImportError:
     from urllib import urlencode
     from urllib2 import urlopen, HTTPError
+    from urlparse import urlparse
 import json
 import sys
 import time
 import argparse
 
-key = ''
 engine = ''
+key = ''
+max_queries = 10
 results = 10
 sleep = 0
 dynamic_extensions = ['asp', 'aspx', 'cfm', 'cgi', 'jsp', 'php', 'phtm', 'phtml', 'shtm', 'shtml']
@@ -24,8 +26,10 @@ def main():
                    help='Google custom search engine id (cx value)')
     parser.add_argument('-k', '--key', default=key,
                    help='Google API key')
+    parser.add_argument('-m', '--max-queries', type=int, default=max_queries,
+                   help='Maximum number of queries to issue')
     parser.add_argument('-r', '--results', type=int, default=results,
-                   help='Maximum number of search results to return')
+                   help='Approximate number of search results to return')
     parser.add_argument('-s', '--sleep', type=int, default=sleep,
                    help='Seconds to sleep before retry if daily API limit is reached (0=disable)')
     parser.add_argument('terms', metavar='T', nargs='*',
@@ -45,18 +49,27 @@ def main():
     data['num'] = 10
     data['start'] = 1
 
-    while data['start'] <= args.results:
-        if args.results - data['start'] + 1 < data['num']:
-            data['num'] = args.results - data['start'] + 1
+    pages = set()
+    found = 0
+    query_max_reached = False
+    query_count = 0
+    data_saved = data['q']
+
+    while found <= args.results and query_count < args.max_queries:
         url = 'https://www.googleapis.com/customsearch/v1?'+ urlencode(data)
         try:
             response_str = urlopen(url)
+            query_count += 1
             response_str = response_str.read().decode('utf-8')
             response = json.loads(response_str)
         except HTTPError as e:
             response_str = e.read().decode('utf-8')
             response = json.loads(response_str)
-            print("error: " + str(response['error']['code']) + " - " + response['error']['message'], file=sys.stderr)
+            if response['error']['code'] == 500:
+                data['q'] = data_saved
+                query_max_reached = True
+                continue
+            print("error: " + str(response['error']['code']) + " - " + str(response['error']['message']), file=sys.stderr)
             for error in response['error']['errors']:
                 print(error['domain'] + "::" + error['reason'] + "::" + error['message'], file=sys.stderr)
             if args.sleep and "Exceeded" in response['error']['message']:
@@ -65,12 +78,21 @@ def main():
                 continue
             else:
                 sys.exit(1)
+        data_saved = data['q']
         for request in response['queries']['request']:
             if int(request['totalResults']) == 0:
                 sys.exit(0)
         for item in response['items']:
-            print(item['link'])
-        data['start'] += data['num']
+            item_url = urlparse(item['link'])
+            if item_url.path in pages:
+                if not query_max_reached:
+                    data['q'] += " -inurl:" + item_url.path
+            else:
+                pages.add(item_url.path)
+                found += 1
+                print(item['link'])
+        if found >= data['num'] or query_max_reached:
+            data['start'] += data['num']
 
 if __name__ == "__main__":
     main()

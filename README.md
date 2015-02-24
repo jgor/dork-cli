@@ -20,7 +20,8 @@ API key:
 ## Usage ##
 <pre>
 $ ./dork-cli.py -h
-usage: dork-cli.py [-h] [-e ENGINE] [-k KEY] [-r RESULTS] [-s SLEEP]
+usage: dork-cli.py [-h] [-e ENGINE] [-k KEY] [-m MAX_QUERIES] [-r RESULTS]
+                   [-s SLEEP]
                    [T [T ...]]
 
 Find dynamic pages via Google dorks.
@@ -33,8 +34,10 @@ optional arguments:
   -e ENGINE, --engine ENGINE
                         Google custom search engine id (cx value)
   -k KEY, --key KEY     Google API key
+  -m MAX_QUERIES, --max-queries MAX_QUERIES
+                        Maximum number of queries to issue
   -r RESULTS, --results RESULTS
-                        Maximum number of search results to return
+                        Approximate number of search results to return
   -s SLEEP, --sleep SLEEP
                         Seconds to sleep before retry if daily API limit is
                         reached (0=disable)
