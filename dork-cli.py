@@ -1,38 +1,66 @@
 #!/usr/bin/env python
-import urllib2
-import urllib
+from __future__ import print_function
+try:
+    from urllib.request import urlopen
+    from urllib.parse import urlencode
+    from urllib.error import HTTPError
+except ImportError:
+    from urllib import urlopen, urlencode
+    from urllib2 import HTTPError
 import json
 import sys
 import time
+import argparse
 
-api_key = 'YOUR_GOOGLE_API_KEY_HERE'
-engine_id = 'YOUR_CUSTOM_SEARCH_ENGINE_ID_HERE'
-num_results = 30
+key = ''
+engine = ''
+results = 10
+sleep = 0
 dynamic_extensions = ['asp', 'aspx', 'cfm', 'cgi', 'jsp', 'php', 'phtm', 'phtml', 'shtm', 'shtml']
-sleep_secs_on_daily_limit_hit = 3600
-
-data = {}
-data['key'] = api_key
-data['cx'] = engine_id
-data['q'] = 'filetype:' + ' OR filetype:'.join(dynamic_extensions) + ' ' + ' '.join(sys.argv[1:])
-data['num'] = 10
-data['start'] = 1
 
 def main():
-    while data['start'] <= num_results:
-        if num_results - data['start'] + 1 < data['num']:
-            data['num'] = num_results - data['start'] + 1
-        url = 'https://www.googleapis.com/customsearch/v1?'+ urllib.urlencode(data)
+    parser = argparse.ArgumentParser(description='Find dynamic pages via Google dorks.')
+    parser.add_argument('-e', '--engine', default=engine,
+                   help='Google custom search engine id (cx value)')
+    parser.add_argument('-k', '--key', default=key,
+                   help='Google API key')
+    parser.add_argument('-r', '--results', type=int, default=results,
+                   help='Maximum number of search results to return')
+    parser.add_argument('-s', '--sleep', type=int, default=sleep,
+                   help='Seconds to sleep before retry if daily API limit is reached (0=disable)')
+    parser.add_argument('terms', metavar='T', nargs='*',
+                   help='additional search term')
+
+    args = parser.parse_args()
+
+    if not args.key or not args.engine:
+        print("ERROR: [key] and [engine] must be set", file=sys.stderr)
+        parser.print_help()
+        sys.exit(1)
+
+    data = {}
+    data['key'] = args.key
+    data['cx'] = args.engine
+    data['q'] = 'filetype:' + ' OR filetype:'.join(dynamic_extensions) + ' ' + ' '.join(args.terms)
+    data['num'] = 10
+    data['start'] = 1
+
+    while data['start'] <= args.results:
+        if args.results - data['start'] + 1 < data['num']:
+            data['num'] = args.results - data['start'] + 1
+        url = 'https://www.googleapis.com/customsearch/v1?'+ urlencode(data)
         try:
-            response = json.load(urllib2.urlopen(url))
-        except urllib2.HTTPError, e:
+            response_str = urlopen(url)
+            response_str = response_str.read().decode('utf-8')
+            response = json.loads(response_str)
+        except HTTPError as e:
             response = json.load(e)
-            print >> sys.stderr, "error: " + str(response['error']['code']) + " - " + response['error']['message']
+            print("error: " + str(response['error']['code']) + " - " + response['error']['message'], file=sys.stderr)
             for error in response['error']['errors']:
-                print >> sys.stderr, error['domain'] + "::" + error['reason'] + "::" + error['message']
-            if "Exceeded" in response['error']['message']:
-                print >> sys.stderr, "sleeping " + str(sleep_secs_on_daily_limit_hit) + " seconds"
-                time.sleep(sleep_secs_on_daily_limit_hit)
+                print(error['domain'] + "::" + error['reason'] + "::" + error['message'], file=sys.stderr)
+            if args.sleep and "Exceeded" in response['error']['message']:
+                print(sys.stderr, "sleeping " + str(args.sleep) + " seconds", file=sys.stderr)
+                time.sleep(args.sleep)
                 continue
             else:
                 sys.exit(1)
@@ -40,7 +68,7 @@ def main():
             if int(request['totalResults']) == 0:
                 sys.exit(0)
         for item in response['items']:
-            print item['link']
+            print(item['link'])
         data['start'] += data['num']
 
 if __name__ == "__main__":
