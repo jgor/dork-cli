@@ -3,6 +3,8 @@ dork-cli
 
 Command-line tool to find dynamic pages via Google dorks.
 
+dork-cli performs searches against a Google custom search engine and returns a list of all the unique page results it finds, filtered by a builtin set of dynamic page extensions. Any number of additional query terms / dorks can be specified. dork-cli was designed to be piped into an external tool such as a vulnerability scanner for automated testing purposes.
+
 ## Setup ##
 In order to use this program you need to configure at a minimum two settings: a Google API key and a custom search engine id.
 
