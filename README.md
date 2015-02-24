@@ -1,22 +1,21 @@
 dork-cli
 ========
 
-Command-line utility for finding potentially vulnerable dynamic webpages within a Google Custom Search Engine (CSE) using Google dorks.
+Command-line tool to find dynamic pages via Google dorks.
 
 ## Setup ##
-In order to use this program you need to configure at a minimum two settings in dork-cli.py: a Google API key and a custom search engine id. Additionally you can configure the number of search results returned per run as well as the list of dynamic file extensions searched.
+In order to use this program you need to configure at a minimum two settings: a Google API key and a custom search engine id.
 
 Custom Search Engine:
 * Create a custom search engine via https://www.google.com/cse/
 * Add your desired domain(s) under "Sites to search"
-* Set the engine id (the cx value in your CSE's url, e.g. "017576662512468239146:omuauf_lfve") in dork-cli.py
+* Click "Search engine ID" button to reveal the id, or grab it from the "cx" url paramter
 
 API key:
 * Open the Google API console at https://code.google.com/apis/console
 * Enable the Custom Search API via APIs & auth > APIs
 * Create a new API key via APIs & auth > Credentials > Create new Key
 * Select "Browser key", leave HTTP Referer blank and click Create
-* Set the API key in dork-cli.py
 
 ## Usage ##
 ./dork-cli.py [additional search terms / dorks]
@@ -51,5 +50,5 @@ http://www.example.com/admin/admin.php
 </pre>
 
 ## API Limitations ##
-The free Google API limits you to 100 searches per day, with a maximum of 10 results per search. This means if you configure dork-cli.py to return 100 results, it will issue 10 queries (1/10th of your daily limit) each time it is run. You have the option to pay for additional searches via the Google API console.
+The free Google API limits you to 100 searches per day, with a maximum of 10 results per search. This means if you configure dork-cli.py to return 100 results, it will issue 10 queries (1/10th of your daily limit) each time it is run. You have the option to pay for additional searches via the Google API console. At the time of writing, signing up for billing on the Google API site gets you $300 free to spend on API calls for 60 days.
 
