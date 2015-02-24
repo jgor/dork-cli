@@ -18,7 +18,25 @@ API key:
 * Select "Browser key", leave HTTP Referer blank and click Create
 
 ## Usage ##
-./dork-cli.py [additional search terms / dorks]
+$ ./dork-cli.py -h
+usage: dork-cli.py [-h] [-e ENGINE] [-k KEY] [-r RESULTS] [-s SLEEP]
+                   [T [T ...]]
+
+Find dynamic pages via Google dorks.
+
+positional arguments:
+  T                     additional search term
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -e ENGINE, --engine ENGINE
+                        Google custom search engine id (cx value)
+  -k KEY, --key KEY     Google API key
+  -r RESULTS, --results RESULTS
+                        Maximum number of search results to return
+  -s SLEEP, --sleep SLEEP
+                        Seconds to sleep before retry if daily API limit is
+                        reached (0=disable)
 
 examples:
 <pre>
