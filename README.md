@@ -18,6 +18,7 @@ API key:
 * Select "Browser key", leave HTTP Referer blank and click Create
 
 ## Usage ##
+<pre>
 $ ./dork-cli.py -h
 usage: dork-cli.py [-h] [-e ENGINE] [-k KEY] [-r RESULTS] [-s SLEEP]
                    [T [T ...]]
@@ -37,6 +38,7 @@ optional arguments:
   -s SLEEP, --sleep SLEEP
                         Seconds to sleep before retry if daily API limit is
                         reached (0=disable)
+</pre>
 
 examples:
 <pre>
