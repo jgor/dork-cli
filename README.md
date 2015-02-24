@@ -44,13 +44,11 @@ examples:
 <pre>
 $ ./dork-cli.py inurl:id
 http://www.example.com/its/sla/sla.php?id=1617
-http://www.example.com/its/sla/sla.php?id=1593
 http://www.example.com/bbucks/index.php?site=5&scode=0&id=720
 http://www.example.com/directory/details.aspx?id=33
 http://www.example.com/SitePages/VOIP%20ID.aspx
 http://www.example.com/personnel_ext.php?id=44
 http://www.example.com/its/alerts/event.php?id=7220
-http://www.example.com/directory/details.cgi?id=21
 [...]
 </pre>
 <pre>
