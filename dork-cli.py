@@ -72,10 +72,10 @@ def main():
             for error in response['error']['errors']:
                 print(error['domain'] + "::" + error['reason'] + "::" + error['message'], file=sys.stderr)
             if "User Rate Limit Exceeded" in response['error']['message']:
-                print(sys.stderr, "sleeping " + str(args.sleep) + " seconds", file=sys.stderr)
+                print("sleeping " + str(args.sleep) + " seconds", file=sys.stderr)
                 time.sleep(5)
             elif args.sleep and "Daily Limit Exceeded" in response['error']['message']:
-                print(sys.stderr, "sleeping " + str(args.sleep) + " seconds", file=sys.stderr)
+                print("sleeping " + str(args.sleep) + " seconds", file=sys.stderr)
                 time.sleep(args.sleep)
                 continue
             else:
