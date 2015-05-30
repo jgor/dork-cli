@@ -47,7 +47,7 @@ optional arguments:
 </pre>
 
 examples:
-<i>NOTE: including -f/--filetypes without an argument, e.g. followed by --, defaults to filtering by a builtin list of dynamic file extensions.</i>
+* NOTE: including -f/--filetypes without an argument, e.g. followed by --, defaults to filtering by a builtin list of dynamic file extensions.
 <pre>
 $ ./dork-cli.py inurl:login
 https://www.example.com/usher/Login.aspx
