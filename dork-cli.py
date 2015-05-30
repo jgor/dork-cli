@@ -25,7 +25,7 @@ def main():
                    help='Google custom search engine id (cx value)')
     parser.add_argument('-f', '--filetypes', nargs='?', default=[],
                    const=dynamic_filetypes,
-                   help='File extensions to return (if present but no extensions specificed, builtin dynamic list is used)')
+                   help='File extensions to return (if present but no extensions specified, builtin dynamic list is used)')
     parser.add_argument('-k', '--key', default=key,
                    help='Google API key')
     parser.add_argument('-m', '--max-queries', type=int, default=max_queries,

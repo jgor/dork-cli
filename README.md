@@ -37,7 +37,7 @@ optional arguments:
                         Google custom search engine id (cx value)
   -f [FILETYPES], --filetypes [FILETYPES]
                         File extensions to return (if present but no
-                        extensions specificed, builtin dynamic list is used)
+                        extensions specified, builtin dynamic list is used)
   -k KEY, --key KEY     Google API key
   -m MAX_QUERIES, --max-queries MAX_QUERIES
                         Maximum number of queries to issue
