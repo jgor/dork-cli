@@ -17,12 +17,15 @@ engine = ''
 key = ''
 max_queries = 10
 sleep = 0
-dynamic_extensions = ['asp', 'aspx', 'cfm', 'cgi', 'jsp', 'php', 'phtm', 'phtml', 'shtm', 'shtml']
+dynamic_filetypes = "asp,aspx,cfm,cgi,jsp,php,phtm,phtml,shtm,shtml"
 
 def main():
     parser = argparse.ArgumentParser(description='Find dynamic pages via Google dorks.')
     parser.add_argument('-e', '--engine', default=engine,
                    help='Google custom search engine id (cx value)')
+    parser.add_argument('-f', '--filetypes', nargs='?', default=[],
+                   const=dynamic_filetypes,
+                   help='File extensions to return (if present but no extensions specificed, builtin dynamic list is used)')
     parser.add_argument('-k', '--key', default=key,
                    help='Google API key')
     parser.add_argument('-m', '--max-queries', type=int, default=max_queries,
@@ -42,7 +45,10 @@ def main():
     data = {}
     data['key'] = args.key
     data['cx'] = args.engine
-    data['q'] = 'filetype:' + ' OR filetype:'.join(dynamic_extensions) + ' ' + ' '.join(args.terms)
+    data['q'] = ' '.join(args.terms)
+    if args.filetypes:
+        filetypes = args.filetypes.split(',')
+        data['q'] += ' filetype:' + ' OR filetype:'.join(filetypes)
     data['num'] = 10
     data['start'] = 1
 

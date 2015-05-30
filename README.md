@@ -1,9 +1,9 @@
 dork-cli
 ========
 
-Command-line tool to find dynamic pages via Google dorks.
+Command-line Google dork tool.
 
-dork-cli performs searches against a Google custom search engine and returns a list of all the unique page results it finds, filtered by a builtin set of dynamic page extensions. Any number of additional query terms / dorks can be specified. dork-cli was designed to be piped into an external tool such as a vulnerability scanner for automated testing purposes.
+dork-cli performs searches against a Google custom search engine and returns a list of all the unique page results it finds, optionally filtered by a set of dynamic page extensions. Any number of additional query terms / dorks can be specified. dork-cli was designed to be piped into an external tool such as a vulnerability scanner for automated testing purposes.
 
 ## Setup ##
 In order to use this program you need to configure at a minimum two settings: a Google API key and a custom search engine id.
@@ -22,7 +22,8 @@ API key:
 ## Usage ##
 <pre>
 $ ./dork-cli.py -h
-usage: dork-cli.py [-h] [-e ENGINE] [-k KEY] [-m MAX_QUERIES] [-s SLEEP]
+usage: dork-cli.py [-h] [-e ENGINE] [-f [FILETYPES]] [-k KEY] [-m MAX_QUERIES]
+                   [-s SLEEP]
                    [T [T ...]]
 
 Find dynamic pages via Google dorks.
@@ -34,6 +35,9 @@ optional arguments:
   -h, --help            show this help message and exit
   -e ENGINE, --engine ENGINE
                         Google custom search engine id (cx value)
+  -f [FILETYPES], --filetypes [FILETYPES]
+                        File extensions to return (if present but no
+                        extensions specificed, builtin dynamic list is used)
   -k KEY, --key KEY     Google API key
   -m MAX_QUERIES, --max-queries MAX_QUERIES
                         Maximum number of queries to issue
@@ -43,8 +47,17 @@ optional arguments:
 </pre>
 
 examples:
+<i>NOTE: including -f/--filetypes without an argument, e.g. followed by --, defaults to filtering by a builtin list of dynamic file extensions.</i>
 <pre>
-$ ./dork-cli.py inurl:id
+$ ./dork-cli.py inurl:login
+https://www.example.com/usher/Login.aspx
+https://www.example.com/login/
+http://www.example.com/rooms/index.php?option=com_user&view=login&Itemid=8
+http://www.example.com/index.php?cmd=login
+[...]
+</pre>
+<pre>
+$ ./dork-cli.py --filetypes -- inurl:id
 http://www.example.com/its/sla/sla.php?id=1617
 http://www.example.com/bbucks/index.php?site=5&scode=0&id=720
 http://www.example.com/directory/details.aspx?id=33
@@ -54,15 +67,7 @@ http://www.example.com/its/alerts/event.php?id=7220
 [...]
 </pre>
 <pre>
-$ ./dork-cli.py inurl:login
-https://www.example.com/usher/Login.aspx
-https://www.example.com/login/index.php
-http://www.example.com/rooms/index.php?option=com_user&view=login&Itemid=8
-http://www.example.com/index.php?cmd=login
-[...]
-</pre>
-<pre>
-$ ./dork-cli.py intitle:login inurl:admin
+$ ./dork-cli.py --filetypes=php,aspx intitle:login inurl:admin
 https://www.example.com/users/lab/admin/portal.php
 https://www.example.com/admin/start/login.aspx?ReturnUrl=%2Fadmin%2Fscheduling%2Faudit%2Fdefault.aspx
 http://www.example.com/admin/admin.php
