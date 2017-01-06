@@ -13,6 +13,7 @@ import sys
 import time
 import argparse
 
+domain = ''
 engine = ''
 key = ''
 max_queries = 10
@@ -21,6 +22,8 @@ dynamic_filetypes = "asp,aspx,cfm,cgi,jsp,php,phtm,phtml,shtm,shtml"
 
 def main():
     parser = argparse.ArgumentParser(description='Find dynamic pages via Google dorks.')
+    parser.add_argument('-d', '--domain', default=domain,
+                   help='Specific domain to search (instead of all domains defined in CSE)')
     parser.add_argument('-e', '--engine', default=engine,
                    help='Google custom search engine id (cx value)')
     parser.add_argument('-f', '--filetypes', nargs='?', default=[],
@@ -45,6 +48,7 @@ def main():
     data = {}
     data['key'] = args.key
     data['cx'] = args.engine
+    data['siteSearch'] = args.domain
     data['q'] = ' '.join(args.terms)
     if args.filetypes:
         filetypes = args.filetypes.split(',')
